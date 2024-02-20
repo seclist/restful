@@ -1,6 +1,13 @@
+import logging
 import requests
 
+# Configure logging
+logging.basicConfig(filename='username_checker.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 print("""
+      
+
+      
    ▄████████    ▄████████    ▄████████     ███        ▄████████ ███    █▄   ▄█       
   ███    ███   ███    ███   ███    ███ ▀█████████▄   ███    ███ ███    ███ ███       
   ███    ███   ███    █▀    ███    █▀     ▀███▀▀██   ███    █▀  ███    ███ ███       
@@ -11,7 +18,7 @@ print("""
   ███    ███   ██████████  ▄████████▀     ▄████▀     ███        ████████▀  █████▄▄██ 
   ███    ███                                                               ▀         
                                                                                      
-                        osint by seclist                                                                                 
+                        OSINT by SecList                                                                                 
                                                                                      
                                                                                      
                                                                                   
@@ -22,6 +29,7 @@ print("""
 
 def usernamesel():
     global username
+    print("this is restful demo, there may be error or lack of functionality with some aspects of the program\n")
     username = input("Enter the username you want to check: ")
     print("\nUsername selected is:", username)
     uservalid()
@@ -29,6 +37,7 @@ def usernamesel():
 def uservalid():
     while True:
         choice = input("\nWould you like to see 'not found' and error codes? (y/n): ")
+        logging.info("User input: %s", choice)
         if choice.lower() == "n" or choice.lower() == "N":
             usercheck_exist()
             break
@@ -37,10 +46,11 @@ def uservalid():
             break
         else:
             print("\nInvalid choice. Please type 'y' or 'n'.")
+            logging.warning("Invalid choice entered by the user")
 
 def usercheck_all():
     with open(f"{username}.txt", "w") as file:
-        for url, site in sites:
+        for url, site in SITES:
             response = requests.get(url.format(username))
             if response.status_code == 200:
                 print(f"{site}: Username exists")
@@ -49,11 +59,13 @@ def usercheck_all():
                 print(f"{site}: Username not found")
             else:
                 print(f"{site}: Error {response.status_code}")
+            logging.info("Checked %s. Response code: %s", site, response.status_code)
     print("Links of existing usernames saved to "+username,".txt")
+    logging.info("Links of existing usernames saved to %s.txt", username)
 
 def usercheck_exist():
     existing_links = []
-    for url, site in sites:
+    for url, site in SITES:
         response = requests.get(url.format(username))
         if response.status_code == 200:
             print(f"{site}: Username exists")
@@ -65,8 +77,9 @@ def save_links(links):
         for link in links:
             file.write(link + "\n")
     print("Links of existing usernames saved to "+username,".txt")
+    logging.info("Links of existing usernames saved to %s.txt", username)
 
-sites = [
+SITES = [
     ("https://www.instagram.com/{}", "Instagram"),
     ("https://www.google.com/search?q=site:twitter.com{}", "Twitter"),
     ("https://www.facebook.com/{}", "Facebook"),
