@@ -8,7 +8,7 @@ offering developers and users a convenient solution for handling username-relate
 
 ## To-Do List
 - [x] Release demo
-- [ ] Release the remaining 350 webpages to the demo (COMING SOON)
+- [ ] Release the remaining webpages to the demo (COMING SOON)
 - [ ] Integrate additional APIs for username checking
 - [ ] Implement a web-based version
 
